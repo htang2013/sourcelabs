@@ -5,7 +5,7 @@ using namespace std;
 class BaseX {
 };
 
-class DeriveX {
+class DeriveX: public BaseX {
 };
 
 int main(void)
@@ -22,6 +22,18 @@ int main(void)
      cout << typeid(a).name() << endl; 
      cout << typeid(b).name() << endl; 
      cout << typeid(d).name() << endl; 
+
+
+     BaseX *bp;
+     DeriveX dd;
+     
+     bp = &dd;
+     cout << "**************" << endl;
+     cout << typeid(*bp).name() << endl;
+     cout << typeid(dd).name() << endl;
+     
+     if ( typeid(dd) == typeid(DeriveX) ) 
+         cout << "Match" << endl;    
 
 }
 
