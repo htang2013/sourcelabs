@@ -23,15 +23,15 @@ void *thread1(void *junk)
 {
    for(i=1;i<=9;i++)
    {
-   printf("IN one\n");
-   pthread_mutex_lock(&mutex);
-   if(i%3==0)
-   pthread_cond_signal(&cond);
-   else
-   printf("thead1:%d\n",i);
-   pthread_mutex_unlock(&mutex);
-   printf("Up  Mutex\n");
-   sleep(10);
+       printf("IN one\n");
+       pthread_mutex_lock(&mutex);
+       if(i%3==0)
+           pthread_cond_signal(&cond);
+       else
+           printf("thead1:%d\n",i);
+       pthread_mutex_unlock(&mutex);
+       printf("Up  Mutex\n");
+       sleep(3);
    }
 }
 
@@ -39,13 +39,13 @@ void *thread2(void *junk)
 {
    while(i<9)
    {
-   printf("IN two \n");
-   pthread_mutex_lock(&mutex);
-   if(i%3!=0)
-   pthread_cond_wait(&cond,&mutex);
-   printf("thread2:%d\n",i);
-   pthread_mutex_unlock(&mutex);
-   printf("Down  Mutex\n");
-   sleep(10);
+       printf("IN two \n");
+       pthread_mutex_lock(&mutex);
+       if(i%3!=0)
+           pthread_cond_wait(&cond,&mutex);
+       printf("thread2:%d\n",i);
+       pthread_mutex_unlock(&mutex);
+       printf("Down  Mutex\n");
+       sleep(3);
    }
 }
