@@ -63,7 +63,7 @@ int main(int argc, char **argv)
  
   printf("Enter Testcase - %s\n", argv[0]);
  
-  printf("Hold Mutex to prevent access to shared data\n");
+  printf("Main Thread holds mutex to prevent access to shared data\n");
   rc = pthread_mutex_lock(&mutex);
   checkResults("pthread_mutex_lock()\n", rc);
  
@@ -75,7 +75,7 @@ int main(int argc, char **argv)
  
   printf("Wait a bit until we are 'done' with the shared data\n");
   sleep(3);
-  printf("Unlock shared data\n");
+  printf("Main thread unlock shared data\n");
   rc = pthread_mutex_unlock(&mutex);
   checkResults("pthread_mutex_lock()\n",rc);
  
