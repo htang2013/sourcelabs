@@ -27,9 +27,6 @@ main()
         perror("msgget");
         exit(1);
     }
-    else 
-     printf("msgget: msgget succeeded: msqid = %d\n", msqid);
-
 
     sbuf.mtype = 1;
     
@@ -37,14 +34,12 @@ main()
     
     (void) strcpy(sbuf.mtext, "I am in the queue?");
     
-    printf("msgget: msgget succeeded: msqid = %d\n", msqid);
-    
     buf_length = strlen(sbuf.mtext) + 1 ;
     
     if (msgsnd(msqid, &sbuf, buf_length, IPC_NOWAIT) < 0) {
        printf ("%d, %d, %s, %d\n", msqid, sbuf.mtype, sbuf.mtext, buf_length);
-        perror("msgsnd");
-        exit(1);
+       perror("msgsnd");
+       exit(1);
     }
 
    else 
