@@ -24,10 +24,12 @@ void *threadB(void *arg)
 {
    while(1) {
        pthread_mutex_lock(&mutex);
-       gCount ++; 
-       printf("thread B count is %d\n", gCount);
-       sleep(1);
-       pthread_cond_signal(&cond); 
+       if ( gCount == 0) { 
+           gCount ++;
+           sleep(1); 
+           printf("thread B count is %d\n", gCount);
+           pthread_cond_signal(&cond);
+       }
        pthread_mutex_unlock(&mutex);
    }
 }

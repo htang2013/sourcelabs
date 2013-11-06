@@ -27,6 +27,7 @@ main()
         perror("msgget");
         exit(1);
     }
+    printf("msqid is %d\n", msqid);
 
     sbuf.mtype = 1;
     
@@ -35,15 +36,17 @@ main()
     (void) strcpy(sbuf.mtext, "I am in the queue?");
     
     buf_length = strlen(sbuf.mtext) + 1 ;
-    
-    if (msgsnd(msqid, &sbuf, buf_length, IPC_NOWAIT) < 0) {
-       printf ("%d, %d, %s, %d\n", msqid, sbuf.mtype, sbuf.mtext, buf_length);
-       perror("msgsnd");
-       exit(1);
+   
+    while(1) { 
+        if (msgsnd(msqid, &sbuf, buf_length, IPC_NOWAIT) < 0) {
+           printf ("%d, %d, %s, %d\n", msqid, sbuf.mtype, sbuf.mtext, buf_length);
+           perror("msgsnd");
+           exit(1);
+        }
+       else 
+           printf("Message: \"%s\" Sent\n", sbuf.mtext);
+       sleep(1);
     }
-
-   else 
-      printf("Message: \"%s\" Sent\n", sbuf.mtext);
       
     exit(0);
 }

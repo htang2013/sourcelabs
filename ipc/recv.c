@@ -23,13 +23,15 @@ main()
         perror("msgget");
         exit(1);
     }
+    printf("msqid is %d\n", msqid);
 
-    
-    if (msgrcv(msqid, &rbuf, MSGSZ, 1, 0) < 0) {
-        perror("msgrcv");
-        exit(1);
+    while(1) {    
+       if (msgrcv(msqid, &rbuf, MSGSZ, 1, 0) < 0) {
+           perror("msgrcv");
+           exit(1);
+       }
+       printf("%s\n", rbuf.mtext);
     }
 
-    printf("%s\n", rbuf.mtext);
     exit(0);
 }
