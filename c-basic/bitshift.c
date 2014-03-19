@@ -7,8 +7,8 @@ void intp(int s)
     for (i = 0; i< 32; i ++)
     {
         if ((s <<i) & 0x80000000 )
-            printf("1");
-        else printf("0");
+            printf("%d", 1);
+        else printf("%d",0);
     }
     printf("\n");
 }

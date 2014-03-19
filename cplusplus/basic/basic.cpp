@@ -2,9 +2,10 @@
 
 using namespace std;
 
+
 class Base {
     public:
-       Base(int a):mv(a){};
+       Base(int a):mv(a){ cout <<"create of: " << mv << endl; };
        void change(int a);
        void display(void) const;
        int mv;
@@ -23,8 +24,16 @@ void Base::display(void) const
 
 int main(void)
 {
+    Base ba(1), bb(2), bc(3);
+    return 0;
+}
+
+/*
+int main(void)
+{
     Base b(1);
     Base c(2);
     return 0;
 };
+*/
 

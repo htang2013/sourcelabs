@@ -4,7 +4,7 @@
 pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
 pthread_cond_t cond = PTHREAD_COND_INITIALIZER;
 
-int gCount = 0;
+int gCount = 5;
 
 
 void *threadA(void *arg)
@@ -12,7 +12,7 @@ void *threadA(void *arg)
    while(1) {
       pthread_mutex_lock(&mutex);
       printf("thread A count is %d\n", gCount);
-      if (gCount == 0) { 
+      if (gCount == 5) { 
            pthread_cond_wait(&cond, &mutex);
       }
       gCount --;
@@ -24,7 +24,7 @@ void *threadB(void *arg)
 {
    while(1) {
        pthread_mutex_lock(&mutex);
-       if ( gCount == 0) { 
+       if ( gCount == 5) { 
            gCount ++;
            sleep(1); 
            printf("thread B count is %d\n", gCount);
