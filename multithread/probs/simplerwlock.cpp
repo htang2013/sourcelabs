@@ -20,8 +20,8 @@ class RwLock
     void getWriteLock();
     void unLock();
     ~RwLock();
-        
 };
+
 RwLock :: RwLock()
 {
     nreaders = 0;
@@ -29,6 +29,7 @@ RwLock :: RwLock()
     pthread_mutex_init(&rw_mutex, NULL);    
     pthread_cond_init(&rw_cond, NULL);
 }
+
 void RwLock :: getReadLock()
 {
     //Obtain Lock.
@@ -48,7 +49,7 @@ void RwLock :: getWriteLock()
     //Obtain Lock
     pthread_mutex_lock(&rw_mutex);
     // If nreader is != 0 it means either a reader or writer is present. wait for signal from reader/writer (do it in a loop)
-    while(0 != nreaders)
+    while(nreaders != 0)
     {
         pthread_cond_wait(&rw_cond, &rw_mutex);
     }
@@ -57,21 +58,22 @@ void RwLock :: getWriteLock()
     // Unlock the mutex.
     pthread_mutex_unlock(&rw_mutex);
 }
+
 void RwLock :: unLock()
 {
     // Obtain Lock.
     pthread_mutex_lock(&rw_mutex);
-    if(0 < nreaders)
+    if(nreaders > 0)
     {
         // One of the readers is done. decrement readers count.
         nreaders--;
-        if(0 == nreaders)
+        if(nreaders == 0)
         {
             // Last reader is done.
             pthread_cond_broadcast(&rw_cond);
         }
     }
-    else if(-1 == nreaders)
+    else if(nreaders == -1)
     {
         // A writer is done. set nreaders to 0 indicating no reader/writer exists.
         nreaders = 0;
@@ -80,6 +82,7 @@ void RwLock :: unLock()
     // Unlock the mutex. 
     pthread_mutex_unlock(&rw_mutex);
 }
+
 RwLock :: ~RwLock()
 {
     // Destroy condition variable and mutex.
