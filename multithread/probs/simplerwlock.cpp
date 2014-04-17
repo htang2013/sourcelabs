@@ -19,6 +19,8 @@ class RwLock
     void getReadLock();
     void getWriteLock();
     void unLock();
+    void unrLock();
+    void unwLock();
     ~RwLock();
 };
 
@@ -44,6 +46,7 @@ void RwLock :: getReadLock()
     //Unlock the mutex. 
     pthread_mutex_unlock(&rw_mutex);        
 }
+
 void RwLock :: getWriteLock()
 {
     //Obtain Lock
@@ -56,6 +59,26 @@ void RwLock :: getWriteLock()
     // Set nreader = -1 indicating a writer is present.
     nreaders = -1;
     // Unlock the mutex.
+    pthread_mutex_unlock(&rw_mutex);
+}
+
+void RwLock::unrLock()
+{
+    pthread_mutex_lock(&rw_mutex);
+    if (nreaders > 0 )
+       nreaders --;
+    if (nreaders == 0)
+       pthread_cond_broadcast(&rw_cond);
+    pthread_mutex_unlock(&rw_mutex);
+}
+
+void RwLock::unwLock()
+{
+    pthread_mutex_lock(&rw_mutex);
+    if ( nreaders == -1) {
+        nreaders = 0;
+        pthread_cond_broadcast(&rw_cond);
+    } 
     pthread_mutex_unlock(&rw_mutex);
 }
 
@@ -89,7 +112,9 @@ RwLock :: ~RwLock()
     pthread_mutex_destroy(&rw_mutex);
     pthread_cond_destroy(&rw_cond);
 }
+
 RwLock rwlock;
+
 void* reader(void* arg)
 {
     cout << "Obtaining read lock." << endl;
@@ -98,9 +123,10 @@ void* reader(void* arg)
     cout << "Obtained read lock." << endl;
     sleep(5);
     cout << "Releasing read lock." << endl;
-    rwlock.unLock();
+    rwlock.unrLock();
     cout << "Released read lock." << endl;    
 }
+
 void* writer(void* arg)
 {
     cout << "Obtaining write lock." << endl;
@@ -109,9 +135,10 @@ void* writer(void* arg)
     cout << "Obtained write lock." << endl;
     sleep(4);
     cout << "Releasing write lock." << endl;
-    rwlock.unLock();
+    rwlock.unwLock();
     cout << "Released write lock." << endl;    
 }
+
 int main(int argc, char** argv)
 {
     pthread_t r1,r2,r3,w1,w2;

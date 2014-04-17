@@ -9,6 +9,12 @@ void swaps ( X & a, X & b)
      b = temp;
 }
 
+template <class X>
+bool ge( X&a, X&b)
+{
+    return a > b;
+}
+
 class Base {
     private:
       int m;
@@ -19,6 +25,14 @@ class Base {
           stream << o.m;
           return stream;
       };
+      int getValue() const
+      {
+          return m;
+      }
+      bool operator > ( const Base &b)
+      {
+           return m > b.m;
+      }
 };
 
 
@@ -36,6 +50,8 @@ int main(void)
      cout <<bA << ":" << bB <<endl;
      swaps(bA,bB);
      cout <<bA << ":" << bB <<endl;
+
+     cout << ge(bA,bB) << endl;
     
      return 0;
 }
