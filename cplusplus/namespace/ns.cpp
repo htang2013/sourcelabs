@@ -10,6 +10,15 @@ namespace X {
      {
 	cout << a << ":"<< b << endl;
      }
+     
+     class T {
+        private:
+          int ts;
+        public:
+          T(int t){ ts = t; }
+          void display(void) { cout << ts << endl; }
+          ~T(void){};
+     };   
 }
 
 
@@ -19,5 +28,7 @@ int main(void)
     a = 30;
     b = 40;
     X::function();
+    X::T t(1);;
+    t.display();
     return 1;
 }
