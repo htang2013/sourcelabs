@@ -28,7 +28,7 @@ int main(void) {
    catch (DivideByZero divZero)
    {
        cerr<<"Attempted to divide "<<divZero.divisor<<" by zero" <<endl;
-       throw; 
+       //throw; 
    }
    return 1;
 }
