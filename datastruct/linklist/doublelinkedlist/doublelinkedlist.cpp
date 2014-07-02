@@ -33,6 +33,20 @@ void Traversal(void)
      }
 }
 
+void ReverseTraversal(void)
+{
+     Node *ptr = headptr;
+     while(ptr->next){
+         ptr = ptr ->next;
+     }
+     cout << "End to ptr" << endl;
+     while(ptr->prev != headptr){
+         cout << "Content: " << ptr->data << endl;
+         ptr = ptr->prev;
+     }
+     cout << "Content: " << headptr->data << endl;
+}
+
 
 bool Remove(int value)
 {
@@ -58,7 +72,8 @@ int main(void)
    }
    Traversal();
    Remove(5);
-   Traversal();
+   cout << "ReverseTraversal"<< endl;
+   ReverseTraversal();
    return 0;
 }
 
