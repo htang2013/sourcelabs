@@ -72,27 +72,25 @@ bool Remove( int value)
     return true;  
 }
 
-TBD  XXXXXXXXXXXXX
 
 void ReverseTraverse(void)
 {
-     Node *ptr = headptr;
+     Node *cur = headptr;
      Node *tail = headptr;
 
      while(tail->next != NULL){
         tail = tail -> next;
      }
-     cout << "Tail:" << tail->data << endl;  
 
-     while() {
-          
-         while(ptr-> next == tail) cout << "Content:" << ptr->data << endl;
+     while(tail!=headptr)
+     {
+        cur = headptr;
+        while(cur->next != tail) cur = cur->next;
+        cout << tail->data << endl;   
+        tail= cur;
      }
-         
-      
-      
+     cout << headptr->data << endl;
      
-    
 }
 
 int main(void)
@@ -101,6 +99,6 @@ int main(void)
         Addition(i*10);
      }
      Remove(30);
-     Traverse();
+     ReverseTraverse();
      return 0;
 }
