@@ -1,0 +1,11 @@
+{
+    "file": {
+         "content": "Hello,World",
+         "format": "text",
+         "date": "2014-05-02"
+         },
+    "metadata" : {
+         "voice": "audio",
+         "picture": "png"
+         }
+}
