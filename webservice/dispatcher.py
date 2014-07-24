@@ -1,4 +1,5 @@
 import eventlet
+import pika
 from eventlet import wsgi
 from pprint import pformat
 import json
@@ -14,7 +15,11 @@ def post_Resource(environ, start_response):
 
     jsoncontent = json.loads(contentinput)
     jsoncontent['file']['content'] = 'Goodbye'
- 
+    channel =  environ['QUEUE_CHANNEL']
+
+    channel.basic_publish(exchange = '', routing_key='Dispatcher_Queue',
+            body = json.dumps(jsoncontent))
+          
     
     start_response("200 OK",[('Content-type', 'text/json')])
     return [json.dumps(jsoncontent)]
@@ -43,6 +48,12 @@ URL_PATTERNS= (
 
 class Dispatcher(object):
 
+    def __init__(self):
+       self.connection = pika.BlockingConnection(pika.ConnectionParameters(host='localhost'))
+       self.channel = self.connection.channel()
+       self.channel.queue_declare(queue='Dispatcher_Queue')
+
+
     def _match(self,path):
         path = path.split('/')[1]
         for url,app in URL_PATTERNS:
@@ -54,6 +65,8 @@ class Dispatcher(object):
         path = environ.get('PATH_INFO','/')
         method = environ.get('REQUEST_METHOD')
         contenttype = environ.get('CONTENT_TYPE')
+        environ['QUEUE_CHANNEL'] = self.channel
+
         #Restful web requests:
         app = RestfulMethod(method)
         if app:
@@ -61,14 +74,6 @@ class Dispatcher(object):
         else:
             start_response("404 NOT FOUND",[('Content-type', 'text/plain')])
             return ["Page dose not exists!"]
-
-def say_Resource(environ, start_response):
-    start_response("200 OK",[('Content-type', 'text/html')])
-    return ["kenshin say hi to you!\n"]
-
-def say_hello(environ, start_response):
-    start_response("200 OK",[('Content-type', 'text/html')])
-    return ["kenshin say hello to you!\n"]
 
 app = Dispatcher()
 
