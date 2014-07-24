@@ -1,4 +1,5 @@
-from wsgiref.simple_server import make_server
+import eventlet
+from eventlet import wsgi
 from pprint import pformat
 import json
 
@@ -71,8 +72,14 @@ def say_hello(environ, start_response):
 
 app = Dispatcher()
 
+# option 1
+#from  wsgiref import make_server
+#httpd = make_server('', 8910, app)
+#print "Serving on port 8910..."
+#httpd.serve_forever()
 
-httpd = make_server('', 8910, app)
-print "Serving on port 8910..."
-httpd.serve_forever()
+
+#option 2
+wsgi.server(eventlet.listen(('127.0.0.1',8910)), app)
+
 
