@@ -7,31 +7,46 @@ from pprint import pformat
 import re
 import json
 
+def download_app(environ, start_response):
+    print "*****************download_app"
+    start_response("200 OK",[('Content-type', 'text/xml')])
+    return ["download application called",]
 
 def host_app(environ, start_response):
-    print "host_app"
-    print environ.
+    print "********************host_app"
     start_response("200 OK",[('Content-type', 'text/xml')])
     return ["host application called",]
 
 def host_precheck(environ, start_response):
 
-    print "host_precheck"
+    print "*******************host_precheck"
     start_response("200 OK",[('Content-type', 'text/xml')])
     return ["host precheck called",]
 
 def host_install(environ, start_response):
 
-    print "host_install"
+    print "*****************host_install"
     start_response("200 OK",[('Content-type', 'text/xml')])
     return ["host install called",]
 
 def host_upgrade(environ, start_response):
 
-    print "host_upgrade"
+    print "*****************host_upgrade"
     start_response("200 OK",[('Content-type', 'text/xml')])
     return ["host upgrade called",]
 
+
+def esxi_download(environ, start_response):
+
+    print "****************esxi_download"
+    start_response("200 OK",[('Content-type', 'text/xml')])
+    return ["esxi_download",]
+
+def vc_download(environ, start_response):
+
+    print "****************vc_download"
+    start_response("200 OK",[('Content-type', 'text/xml')])
+    return ["vc_download",]
 
 def get_Resource(environ, start_response):
     start_response("200 OK",[('Content-type', 'text/xml')])
@@ -93,6 +108,7 @@ class URLdispatcher(object):
              environ['wsgiorg.routing_args'] = (new_pos, new_named)
              environ['SCRIPT_NAME'] = script_name + path_info[:match.end()]
              environ['PATH_INFO'] = extra_path_info
+             print environ['PATH_INFO']
              return application(environ, start_response)
 
         return self.page_not_found(environ, start_response)
@@ -106,7 +122,11 @@ dispatch_app = URLdispatcher([
        (re.compile(r'/hosts/$'), host_app),
        (re.compile(r'/hosts/([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3})/precheck$'), host_precheck),
        (re.compile(r'/hosts/([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3})/install$'), host_install),
-       (re.compile(r'/host/([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3})/upgrade$'), host_upgrade)])
+       (re.compile(r'/host/([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3})/upgrade$'), host_upgrade),
+       (re.compile(r'/downloads/$'), download_app),
+       (re.compile(r'/downloads/esxi/[0-9]{1,7}$'), esxi_download),
+       (re.compile(r'/downloads/vc/[0-9]{1,7}$'), vc_download)
+       ])
 
  
 
