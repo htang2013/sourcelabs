@@ -8,7 +8,7 @@ $(LIBS): $(SRC_OBJ)
 	ar rcs $@ $^
 
 $(SRC_OBJ): $(SRC)
-	g++ -c $^
+	g++ -c $^ -I../include
 
 clean:
 	rm -f *.o *.a

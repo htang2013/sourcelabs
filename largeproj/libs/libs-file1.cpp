@@ -1,4 +1,6 @@
+#include"common.h"
 
-void file1(void)
+void libfile1(void)
 {
+    printf("libfile1\n");
 }
